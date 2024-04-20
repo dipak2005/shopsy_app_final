@@ -6,14 +6,7 @@ TextEditingController name=TextEditingController();
 TextEditingController email=TextEditingController();
 TextEditingController description=TextEditingController();
 TextEditingController price=TextEditingController();
-  RxString filepath = "".obs;
 
-  void pickImage(bool isCamara) async {
-    XFile? file = await ImagePicker()
-        .pickImage(
-        source: isCamara ? ImageSource.camera : ImageSource.gallery);
-    filepath.value = file!.path;
-  }
 
 
 
