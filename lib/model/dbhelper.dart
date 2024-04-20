@@ -17,22 +17,25 @@ class DBHelper {
 
   Future initDatabase() async {
     database = await openDatabase(dbname, version: 1, onCreate: (db, version) {
-      db.execute('''CREATE TABLE "$tableName" (
+      db.execute('''CREATE TABLE CREATE TABLE "$tableName" (
 	"name"	TEXT NOT NULL,
 	"price"	BLOB NOT NULL,
 	"id"	INTEGER NOT NULL UNIQUE,
-	"discripiton"	TEXT NOT NULL,
+	"description"	TEXT NOT NULL,
 	"image"	TEXT NOT NULL,
 	PRIMARY KEY("id" AUTOINCREMENT)
 )
+
 )''');
     }, singleInstance: true);
   }
 
-  Future insertProduct(Map<String, dynamic> product) async {
+  Future insertProduct(Product product) async {
     database = await openDatabase(dbname);
-    database?.insert(tableName, product,
-        conflictAlgorithm: ConflictAlgorithm.replace);
+    database?.insert(
+      tableName,
+      product.toJson(),
+    );
     database?.close();
   }
 

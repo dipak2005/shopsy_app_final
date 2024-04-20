@@ -7,11 +7,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopsy_app/controller/homecontroller.dart';
-import 'package:shopsy_app/controller/usermodel.dart';
+import 'package:shopsy_app/controller/addproduct.dart';
 import 'package:shopsy_app/model/add_product_model.dart';
 import 'package:shopsy_app/model/dbhelper.dart';
 import 'package:shopsy_app/model/product.dart';
 
+import '../model/database/product_model.dart';
 import '../model/logn& signup.dart';
 
 class HomePage extends StatelessWidget {
@@ -49,13 +50,13 @@ class HomePage extends StatelessWidget {
                     trailing: CircleAvatar(
                       child: IconButton(
                         onPressed: () async {
-                         Product newProduct= Product(
+                          Product newProduct = Product(
                               name: productDetail["name"],
                               price: productDetail["price"],
-                              discription: productDetail["discripiton"],
+                              description: productDetail["discripiton"],
                               image: productDetail["image"]);
                           DBHelper helper = DBHelper();
-                          await helper.insertProduct(newProduct.toJson());
+                          await helper.insertProduct(newProduct);
                         },
                         icon: Icon(Icons.add_shopping_cart),
                       ),
@@ -169,10 +170,10 @@ class HomePage extends StatelessWidget {
                               return null;
                             }
                           },
-                          controller: discription,
+                          controller: description,
                           onFieldSubmitted: (value) {},
                           decoration: InputDecoration(
-                            hintText: "Enter Discription",
+                            hintText: "Enter Description",
                             enabled: true,
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
@@ -199,7 +200,7 @@ class HomePage extends StatelessWidget {
                             .set(Product(
                                     name: name.text,
                                     price: price.text,
-                                    discription: discription.text,
+                                    description: description.text,
                                     image: filepath.value)
                                 .toJson());
                         Get.back();

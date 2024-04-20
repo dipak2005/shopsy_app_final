@@ -7,6 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shopsy_app/model/logn&%20signup.dart';
 import 'package:shopsy_app/model/product.dart';
 
+import 'database/product_model.dart';
+
 class AddProduct {
   static final _instance = AddProduct._();
 
@@ -35,7 +37,7 @@ class AddProduct {
     Product product = Product(
         image: image,
         name: name.text,
-        discription: discription.text,
+        description: description.text,
         price: price.text);
 
     var addData=FirebaseFirestore.instance

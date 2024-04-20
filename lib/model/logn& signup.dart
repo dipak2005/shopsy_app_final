@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 
 TextEditingController name=TextEditingController();
 TextEditingController email=TextEditingController();
-TextEditingController discription=TextEditingController();
+TextEditingController description=TextEditingController();
 TextEditingController price=TextEditingController();
   RxString filepath = "".obs;
 
