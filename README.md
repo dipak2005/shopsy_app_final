@@ -19,11 +19,7 @@
 - Quality of code and project structure
 - Presentation quality and clarity of communication
 # Screen shorts (ss):
-<img src> ![IMG-20240421-WA0006](https://github.com/dipak2005/shopsy_app_final/assets/143473007/97c4aa25-c1c4-4735-9137-d184e6abf312)
-<img src> ![IMG-20240421-WA0005](https://github.com/dipak2005/shopsy_app_final/assets/143473007/ba295875-57b9-437e-a1f7-09ca52c1de69)
-<img src> ![IMG-20240421-WA0004](https://github.com/dipak2005/shopsy_app_final/assets/143473007/ea69e170-5656-445d-8e3a-b63c3cd22bd3)
-<img src> ![IMG-20240421-WA0007](https://github.com/dipak2005/shopsy_app_final/assets/143473007/4684a25d-6537-4be8-82ca-d77a6bdcf1cc)
-<img src> ![IMG-20240421-WA0003](https://github.com/dipak2005/shopsy_app_final/assets/143473007/c94fbf34-f35b-4cab-87e4-38dd6ae26b1d)
+<img src> ![IMG-20240421-WA0006](https://github.com/dipak2005/shopsy_app_final/assets/143473007/277a95e9-7656-4a99-8c33-c0d248d7b53e)
 # Screen recoding:
 https://drive.google.com/file/d/1c66xccDOzuBkQtCmLuTDng0fxB877Sjy/view?usp=drive_link
 
