@@ -10,6 +10,7 @@ import 'package:shopsy_app/controller/homecontroller.dart';
 import 'package:shopsy_app/controller/addproduct.dart';
 import 'package:shopsy_app/model/add_product_model.dart';
 import 'package:shopsy_app/model/dbhelper.dart';
+
 import 'package:shopsy_app/model/product.dart';
 
 import '../model/database/product_model.dart';
@@ -46,17 +47,15 @@ class HomePage extends StatelessWidget {
                     //       "image".replaceAll(".", "/").replaceAll("+", "/")])),
                     // ),
                     title: Text(productDetail["name"]),
-                    subtitle: Text(productDetail["discription"]),
+                    subtitle: Text(productDetail["description"]),
                     trailing: CircleAvatar(
                       child: IconButton(
                         onPressed: () async {
-                          Product newProduct = Product(
-                              name: productDetail["name"],
-                              price: productDetail["price"],
-                              description: productDetail["discripiton"],
-                              image: productDetail["image"]);
-                          DBHelper helper = DBHelper();
-                          await helper.insertProduct(newProduct);
+                          DBHelper().insertProduct(
+                              productDetail["name"],
+                              productDetail["description"],
+                              productDetail["image"],
+                              productDetail["price"]);
                         },
                         icon: Icon(Icons.add_shopping_cart),
                       ),
@@ -165,7 +164,7 @@ class HomePage extends StatelessWidget {
                           keyboardType: TextInputType.name,
                           validator: (value) {
                             if (value?.isEmpty ?? false) {
-                              return "* Plz Enter Product Discription";
+                              return "* Plz Enter Product Description";
                             } else {
                               return null;
                             }

@@ -15,8 +15,7 @@ import 'view/login/loginpage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  DBHelper helper = DBHelper();
-  helper.initDatabase();
+  await DBHelper().initDatabase();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

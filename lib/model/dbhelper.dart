@@ -1,8 +1,9 @@
 import 'package:shopsy_app/model/database/product_model.dart';
+
 import 'package:sqflite/sqflite.dart';
 
 class DBHelper {
-  static final DBHelper instance = DBHelper._();
+  static final DBHelper _obj = DBHelper._();
 
   DBHelper._();
 
@@ -10,43 +11,68 @@ class DBHelper {
   String tableName = "Product";
 
   factory DBHelper() {
-    return instance;
+    return _obj;
   }
 
+  static DBHelper get instance => _obj;
   Database? database;
 
-  Future initDatabase() async {
-    database = await openDatabase(dbname, version: 1, onCreate: (db, version) {
-      db.execute('''CREATE TABLE CREATE TABLE "$tableName" (
+  Future<void> initDatabase() async {
+    database = await openDatabase(dbname, version: 3, onCreate: (db, version) {
+      db.execute('''CREATE TABLE "$tableName" (
 	"name"	TEXT NOT NULL,
-	"price"	BLOB NOT NULL,
-	"id"	INTEGER NOT NULL UNIQUE,
 	"description"	TEXT NOT NULL,
 	"image"	TEXT NOT NULL,
+	"price"	TEXT NOT NULL,
+	"id"	INTEGER NOT NULL UNIQUE,
 	PRIMARY KEY("id" AUTOINCREMENT)
-)
-
-)''');
+);''');
     }, singleInstance: true);
   }
 
-  Future insertProduct(Product product) async {
-    database = await openDatabase(dbname);
-    database?.insert(
+  Future<void> insertProduct(
+      String name, String description, String image, String price) async {
+    var database = await openDatabase(dbname);
+    List<Map<String, dynamic>> result = await database.query(
       tableName,
-      product.toJson(),
+      where: 'name = ? AND description = ? AND image = ? AND price = ?',
+      whereArgs: [name, description, image, price],
     );
-    database?.close();
+    database.insert(tableName, {
+      "name": name,
+      "description": description,
+      "image": image,
+      "price": price,
+      "id":0,
+    });
+    database.close();
+    // Product product = Product();
+    // List<Map<String, dynamic>> data = await database.query(tableName,
+    //     where: "name = ? AND description = ? AND image = ? AND price = ?",
+    //     whereArgs: [
+    //       product.name,
+    //       product.description,
+    //       product.image,
+    //       product.price
+    //     ]);
+    // if (data.isEmpty) {
+    //   database.insert(tableName, {
+    //     "name": product.name,
+    //     "description": product.description,
+    //     "image": product.image,
+    //     "price": product.price
+    //   });
+    // }
+    // database.close();
   }
 
   Future deleteProduct(Product product) async {
     if (database == null) await initDatabase();
-    database?.delete(tableName, where: "id=?");
+    database?.delete(tableName, where: "name=?", whereArgs: [product.name]);
   }
 
   Future<List<Map<String, Object?>>?> getProduct() async {
-    database = await openDatabase(dbname);
-    return await database
-        ?.rawQuery("select * from  Product where name=${Product().name}");
+    var database = await openDatabase(dbname);
+    return await database.rawQuery("select * from  $tableName");
   }
 }
