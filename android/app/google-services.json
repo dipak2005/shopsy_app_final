@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "456222068260",
+    "project_id": "shopsyapp-3a5b9",
+    "storage_bucket": "shopsyapp-3a5b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456222068260:android:4e55a8b7b97b5c19d112b1",
+        "android_client_info": {
+          "package_name": "com.dipak.shopsy_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "456222068260-27o5r4f4ua5gbm196d4b3j46mrlqgud4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC3r97NWTH0TbgfV1MFWm7RYVGB6Q9W5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "456222068260-27o5r4f4ua5gbm196d4b3j46mrlqgud4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "456222068260-1jeqkqv8nms0vlmcuh9mr9m7cb0ll2t6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dipak.shopsyApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
