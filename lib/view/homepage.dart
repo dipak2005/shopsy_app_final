@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -25,11 +26,24 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Shopsy Mart"),
+        leading: Icon(
+          Icons.local_mall_outlined,
+          size: 30,
+          color: Colors.red,
+        ),
+        title: Text(
+          "Shopsy Mart",
+          style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500),
+        ),
         actions: [
-          IconButton(onPressed: () {
-            Get.to(()=>CartPage());
-          }, icon: Icon(Icons.shopping_cart_checkout,color: Colors.red,))
+          IconButton(
+              onPressed: () {
+                Get.to(() => CartPage());
+              },
+              icon: Icon(
+                Icons.shopping_cart_checkout,
+                color: Colors.red,
+              ))
         ],
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -50,65 +64,104 @@ class HomePage extends StatelessWidget {
                 controller.productImage = productDetail["image"];
                 controller.productDescription = productDetail["description"];
                 controller.productPrice = productDetail["price"];
-                return Card(
-                  child: ListTile(
-                    onTap: () {
-                      FirebaseFirestore.instance
-                          .collection("product")
-                          .doc(productDetail.id)
-                          .delete();
-                    },
-                    leading: Container(
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(40)
-                      ),
-                      child: CircleAvatar(
-                      radius: 30,
-                      child: Image.memory(base64Decode(productDetail["image"]),fit: BoxFit.fitWidth),
-                  ),
-                    ),
-                    title: Text(productDetail["name"]),
-                    subtitle: Text(productDetail["description"]),
-                    trailing: CircleAvatar(
-                      child: IconButton(
-                        onPressed: () async {
-                          print(controller.productDescription);
-                          await DBHelper().insertProduct(Product(
-                              description:
-                              productDetail["description"],
-                              price: productDetail["price"],
-                              name: productDetail["name"],
-                              image: productDetail["image"]));
-                          // showDialog(
-                          //   context: context,
-                          //   builder: (context) {
-                          //     return AlertDialog(
-                          //       title:
-                          //           Text("Are you want to Added this cart ???"),
-                          //       actions: [
-                          //         TextButton(
-                          //             onPressed: () {
-                          //               Get.back();
-                          //             },
-                          //             child: Text("No")),
-                          //         TextButton(
-                          //             onPressed: () async {
-                          //               await DBHelper().insertProduct(Product(
-                          //                   description:
-                          //                       productDetail["description"],
-                          //                   price: productDetail["price"],
-                          //                   name: productDetail["name"],
-                          //                   image: productDetail["image"]));
-                          //
-                          //             },
-                          //             child: Text("yes"))
-                          //       ],
-                          //     );
-                          //   },
-                          // );
+                return Hero(
+                  tag: index,
+                  child: SizedBox(
+                    height: MediaQuery.sizeOf(context).height * 0.12,
+                    child: Card(
+                      margin: EdgeInsets.all(10),
+                      surfaceTintColor: Colors.red,
+                      child: ListTile(
+                        onLongPress: () {
+                          FirebaseFirestore.instance
+                              .collection("product")
+                              .doc(productDetail.id)
+                              .delete();
                         },
-                        icon: Icon(Icons.add_shopping_cart),
+                        leading: Container(
+                          clipBehavior: Clip.antiAlias,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8)),
+                          child: CircleAvatar(
+                            radius: 40,
+                            backgroundImage: MemoryImage(
+                              base64Decode(productDetail["image"]),
+                            ),
+                          ),
+                        ),
+                        title: Text(
+                          productDetail["name"],
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.w700),
+                        ),
+                        subtitle: Text(
+                          productDetail["description"],
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.w500),
+                        ),
+                        trailing: CircleAvatar(
+                          backgroundColor: Colors.red.shade200,
+                          child: IconButton(
+                            onPressed: () async {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text(
+                                      "Are you want to Added this cart ???",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.red),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Get.back();
+                                          },
+                                          child: Text(
+                                            "No",
+                                            style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 18),
+                                          )),
+                                      TextButton(
+                                          onPressed: () async {
+                                            await DBHelper().insertProduct(
+                                                Product(
+                                                    description: productDetail[
+                                                        "description"],
+                                                    price:
+                                                        productDetail["price"],
+                                                    name: productDetail["name"],
+                                                    image: productDetail[
+                                                        "image"]));
+                                            Get.showSnackbar(GetSnackBar(
+                                              backgroundColor: Colors.green,
+                                              title: "Add successfully",
+                                              duration: Duration(microseconds: 200),
+                                              snackStyle: SnackStyle.GROUNDED,
+                                            ));
+
+                                            Get.to(()=>CartPage());
+
+                                          },
+                                          child: Text(
+                                            "yes",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.red),
+                                          ))
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            icon: Icon(Icons.add_shopping_cart,
+                                color: Colors.white),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -121,12 +174,17 @@ class HomePage extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.red,
           onPressed: () async {
             showDialog(
               context: context,
               builder: (context) {
                 return AlertDialog(
-                  title: Text("Add Product"),
+                  title: Text(
+                    "Add Product",
+                    style: TextStyle(
+                        color: Colors.red, fontWeight: FontWeight.w700),
+                  ),
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -134,10 +192,11 @@ class HomePage extends StatelessWidget {
                         onTap: () {
                           controller.pickImage(false);
                         },
-                        child: Stack(
+                        child: Column(
                           children: [
                             Obx(
                               () => CircleAvatar(
+                                backgroundColor: Colors.red.shade100,
                                 radius: 50,
                                 backgroundImage: FileImage(
                                   File(controller.filepath.value),
@@ -147,24 +206,27 @@ class HomePage extends StatelessWidget {
                                         onPressed: () {
                                           controller.pickImage(true);
                                         },
-                                        icon: Icon(Icons.camera_alt_outlined))
+                                        icon: Icon(Icons.camera_alt_outlined,
+                                            color: Colors.red))
                                     : SizedBox.shrink(),
                               ),
                             ),
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: IconButton(
-                                  onPressed: () {
-                                    controller.pickImage(false);
-                                  },
-                                  icon: Icon(Icons.photo_outlined)),
-                            )
+                            TextButton(
+                                onPressed: () {
+                                  controller.pickImage(false);
+                                },
+                                child: Text(
+                                  "Gallery",
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20),
+                                ))
                           ],
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 18.0),
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: TextFormField(
                           keyboardType: TextInputType.name,
                           validator: (value) {
@@ -181,14 +243,14 @@ class HomePage extends StatelessWidget {
                             enabled: true,
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
-                                borderSide: BorderSide(color: Colors.green)),
-                            suffixIcon: Icon(Icons.edit, color: Colors.green),
-                            hintStyle: TextStyle(color: Colors.green),
+                                borderSide: BorderSide(color: Colors.red)),
+                            suffixIcon: Icon(Icons.edit, color: Colors.red),
+                            hintStyle: TextStyle(color: Colors.red),
                           ),
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 18.0),
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: TextFormField(
                           keyboardType: TextInputType.name,
                           validator: (value) {
@@ -205,14 +267,14 @@ class HomePage extends StatelessWidget {
                             enabled: true,
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
-                                borderSide: BorderSide(color: Colors.green)),
-                            suffixIcon: Icon(Icons.edit, color: Colors.green),
-                            hintStyle: TextStyle(color: Colors.green),
+                                borderSide: BorderSide(color: Colors.red)),
+                            suffixIcon: Icon(Icons.edit, color: Colors.red),
+                            hintStyle: TextStyle(color: Colors.red),
                           ),
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 18.0),
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: TextFormField(
                           keyboardType: TextInputType.name,
                           validator: (value) {
@@ -229,9 +291,9 @@ class HomePage extends StatelessWidget {
                             enabled: true,
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
-                                borderSide: BorderSide(color: Colors.green)),
-                            suffixIcon: Icon(Icons.edit, color: Colors.green),
-                            hintStyle: TextStyle(color: Colors.green),
+                                borderSide: BorderSide(color: Colors.red)),
+                            suffixIcon: Icon(Icons.edit, color: Colors.red),
+                            hintStyle: TextStyle(color: Colors.red),
                           ),
                         ),
                       ),
@@ -242,7 +304,13 @@ class HomePage extends StatelessWidget {
                       onPressed: () {
                         Get.back();
                       },
-                      child: Text("No"),
+                      child: Text(
+                        "No",
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                     TextButton(
                       onPressed: () async {
@@ -262,15 +330,35 @@ class HomePage extends StatelessWidget {
                               image: controller.image,
                             ).toJson());
                         Get.back();
+                        Get.showSnackbar(GetSnackBar(
+                          backgroundColor: Colors.green,
+                          title: "Add successfully",
+                          duration: Duration(microseconds: 200),
+                          snackStyle: SnackStyle.GROUNDED,
+                        ));
+
+                        controller.filepath.value = "";
+                        name.clear();
+                        price.clear();
+                        description.clear();
                       },
-                      child: Text("Yes"),
+                      child: Text(
+                        "Yes",
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ],
                 );
               },
             );
           },
-          child: Icon(Icons.add_shopping_cart)),
+          child: Icon(
+            Icons.add_shopping_cart,
+            color: Colors.white,
+          )),
     );
   }
 }

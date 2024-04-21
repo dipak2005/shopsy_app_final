@@ -25,7 +25,7 @@ class HomeController extends GetxController {
     XFile? file = await ImagePicker()
         .pickImage(
         source: isCamara ? ImageSource.camera : ImageSource.gallery);
-    filepath.value = file!.path;
+    filepath.value = file?.path??"";
 
   }
 
